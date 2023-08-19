@@ -3,14 +3,14 @@ import NavBar from "@/components/Navbar/Navbar";
 import AuthModal from "@/components/Modals/AuthModal";
 import Login from "@/components/Modals/Login";
 import { useRecoilValue } from "recoil";
-import { AuthModalState } from "@/atoms/authModalAtom";
+import { authModalState } from "@/atoms/authModalAtom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/firebase";
 import { useRouter } from "next/router";
 type AuthProps = {};
 
 const AuthPage: React.FC<AuthProps> = () => {
-  const authModal = useRecoilValue(AuthModalState);
+  const authModal = useRecoilValue(authModalState);
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
   useEffect(() => {
@@ -26,6 +26,7 @@ const AuthPage: React.FC<AuthProps> = () => {
         <img src="/hero.png" alt="hero_image" />
       </div>
       {authModal.isOpen && <AuthModal />}
+      <Login />
     </div>
   );
 };

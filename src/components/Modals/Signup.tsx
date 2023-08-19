@@ -1,20 +1,22 @@
-import { AuthModalState } from "@/atoms/authModalAtom";
+import { authModalState } from "@/atoms/authModalAtom";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase/firebase";
+import { auth, firestore } from "@/firebase/firebase";
 import { useRouter } from "next/router";
+import { doc, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 type SignUpProps = {};
 
 const SignUp: React.FC<SignUpProps> = () => {
-  const setAuthModalState = useSetRecoilState(AuthModalState);
+  const setAuthModalState = useSetRecoilState(authModalState);
   const router = useRouter();
   const handleClick = (type: "login" | "register" | "forgotPassword") => {
-    setAuthModalState((prev) => ({ ...prev, type }));
+    setAuthModalState((prev: any) => ({ ...prev, type }));
   };
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
@@ -32,14 +34,33 @@ const SignUp: React.FC<SignUpProps> = () => {
     if (!input.email || !input.displayName || !input.password)
       return alert("Please fill all the fields");
     try {
+      toast.loading("Creating your account", {
+        position: "top-center",
+        toastId: "loadingToast",
+      });
+
       const newUser = await createUserWithEmailAndPassword(
         input.email,
         input.password
       );
+      const userData = {
+        uid: newUser?.user.uid,
+        email: newUser?.user.email,
+        displayName: input?.displayName,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        likedProblems: [],
+        dislikedProblems: [],
+        solvedProblems: [],
+        starredProblems: [],
+      };
+      await setDoc(doc(firestore, "users", newUser.user.uid), userData);
       if (!newUser) return;
       router.push("/");
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      toast.error(error.message, { position: "top-center" });
+    } finally {
+      toast.dismiss("loadingToast");
     }
   };
   return (
