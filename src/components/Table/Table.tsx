@@ -73,54 +73,6 @@ const Table: React.FC<TableProps> = () => {
           }
         </table>
       </div>
-
-      <form className="pd-x-6 flex flex-col max-w-sm gap-3">
-        <input
-          onChange={(event) => handleInputChange(event)}
-          type="text"
-          placeholder="problem id"
-          name="id"
-        />
-        <input
-          onChange={(event) => handleInputChange(event)}
-          type="text"
-          placeholder="title"
-          name="title"
-        />
-        <input
-          onChange={(event) => handleInputChange(event)}
-          type="text"
-          placeholder="difficulty"
-          name="difficulty"
-        />
-        <input
-          onChange={(event) => handleInputChange(event)}
-          type="text"
-          placeholder="category"
-          name="category"
-        />
-        <input
-          onChange={(event) => handleInputChange(event)}
-          type="text"
-          placeholder="order"
-          name="order"
-        />
-        <input
-          onChange={(event) => handleInputChange(event)}
-          type="text"
-          placeholder="videoId?"
-          name="videoId"
-        />
-        <input
-          onChange={(event) => handleInputChange(event)}
-          type="text"
-          placeholder="link?"
-          name="link"
-        />
-        <button className="bg-white" onClick={handleSubmit}>
-          Save to firestore
-        </button>
-      </form>
     </>
   );
 };
