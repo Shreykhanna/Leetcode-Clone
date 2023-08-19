@@ -18,19 +18,7 @@ const Table: React.FC<TableProps> = () => {
     likes: 0,
     dislikes: 0,
   });
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(inputs);
-    setInputs({ ...inputs, [event.target.name]: event.target.value });
-  };
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
-    const newProblem = {
-      ...inputs,
-      order: Number(inputs.order),
-    };
-    await setDoc(doc(firestore, "problems", inputs.id), newProblem);
-    alert("saved to db");
-  };
+
   return (
     <>
       <h1 className="text-2xl text-center text-gray-700 dark:text-gray-400 font-medium uppercase mt 18 mb 5">
