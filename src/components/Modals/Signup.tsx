@@ -12,8 +12,8 @@ type SignUpProps = {};
 const SignUp: React.FC<SignUpProps> = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const router = useRouter();
-  const handleClick = (type: "login" | "register" | "forgotPassword") => {
-    setAuthModalState((prev: any) => ({ ...prev, type }));
+  const handleClick = () => {
+    setAuthModalState((prev: any) => ({ ...prev, type: "login" }));
   };
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
@@ -26,7 +26,7 @@ const SignUp: React.FC<SignUpProps> = () => {
     setInput((prev) => ({ ...prev, [event.target.name]: event.target.value }));
     console.log("inputs", input);
   };
-  const handleRegister = async (event: React.FormEvent<HTMLInputElement>) => {
+  const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!input.email || !input.displayName || !input.password)
       return alert("Please fill all the fields");
@@ -54,7 +54,7 @@ const SignUp: React.FC<SignUpProps> = () => {
       await setDoc(doc(firestore, "users", newUser!.user.uid), userData);
       if (!newUser) return;
       router.push("/");
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.message, { position: "top-center" });
     } finally {
       toast.dismiss("loadingToast");
@@ -62,7 +62,7 @@ const SignUp: React.FC<SignUpProps> = () => {
   };
   return (
     <>
-      <form className="space-y-6 px-6 py-4">
+      <form className="space-y-6 px-6 py-4" onSubmit={handleRegister}>
         <h3 className="text-xl font-medium text-white">Register to LeetCode</h3>
         <div>
           <label
@@ -116,7 +116,6 @@ const SignUp: React.FC<SignUpProps> = () => {
           <button
             type="submit"
             className="w-full text-white rounded-md focus:ring-blue-300 font-medium text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s"
-            onClick={handleRegister}
           >
             {loading ? "Registering" : "Register"}
           </button>
@@ -124,10 +123,7 @@ const SignUp: React.FC<SignUpProps> = () => {
         <div></div>
         <div className="text-sm font-medium text-gray-300">
           Already have an account?{" "}
-          <a
-            onClick={() => handleClick("login")}
-            className="text-blue-700 hover:underline"
-          >
+          <a onClick={handleClick} className="text-blue-700 hover:underline">
             LogIn
           </a>
         </div>
