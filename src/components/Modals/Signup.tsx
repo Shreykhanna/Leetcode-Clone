@@ -1,10 +1,7 @@
 import { authModalState } from "@/atoms/authModalAtom";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import {
-  useCreateUserWithEmailAndPassword,
-  useSignInWithEmailAndPassword,
-} from "react-firebase-hooks/auth";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth, firestore } from "@/firebase/firebase";
 import { useRouter } from "next/router";
 import { doc, setDoc } from "firebase/firestore";
@@ -54,7 +51,7 @@ const SignUp: React.FC<SignUpProps> = () => {
         solvedProblems: [],
         starredProblems: [],
       };
-      await setDoc(doc(firestore, "users", newUser.user.uid), userData);
+      await setDoc(doc(firestore, "users", newUser!.user.uid), userData);
       if (!newUser) return;
       router.push("/");
     } catch (error) {
