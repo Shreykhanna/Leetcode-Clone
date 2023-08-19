@@ -7,7 +7,7 @@ const InitialInputModalState: AuthModalState = {
   isOpen: false,
   type: "login",
 };
-export const AuthModalState = atom<AuthModalState>({
+export const authModalState = atom<AuthModalState>({
   key: "authModalState",
   default: InitialInputModalState,
 });

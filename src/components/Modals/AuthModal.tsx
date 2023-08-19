@@ -3,12 +3,12 @@ import { IoClose } from "react-icons/io5";
 import Login from "./Login";
 import SignUp from "./Signup";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { AuthModalState } from "@/atoms/authModalAtom";
+import { authModalState } from "@/atoms/authModalAtom";
 import ResetPassword from "./ResetPassword";
 type AuthModalProps = {};
 
 const AuthModal: React.FC<AuthModalProps> = () => {
-  const authModal = useRecoilValue(AuthModalState);
+  const authModal = useRecoilValue(authModalState);
   const closeModal = useCloseModal();
   return (
     <>
@@ -46,7 +46,7 @@ const AuthModal: React.FC<AuthModalProps> = () => {
 export default AuthModal;
 
 function useCloseModal() {
-  const setAuthModal = useSetRecoilState(AuthModalState);
+  const setAuthModal = useSetRecoilState(authModalState);
   const closeModal = () => {
     setAuthModal((prev) => ({ ...prev, isOpen: false, type: "login" }));
   };
